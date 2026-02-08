@@ -1,0 +1,24 @@
+name: Build EXE for Chris
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: |
+        pip install PyQt6 numpy pyaudio pyinstaller
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --windowed --name "Orbit_Studio_Chris" orbit_studio.py
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Orbit-Studio-Windows
+        path: dist/Orbit_Studio_Chris.exe

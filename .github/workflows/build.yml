@@ -6,10 +6,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4 # Zmieniono na v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5 # Zmieniono na v5
       with:
         python-version: '3.11'
         
@@ -17,8 +17,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install PyQt6 numpy pyinstaller
-        # Instalujemy PyAudio z gotowego pliku, bo kompilacja czasem zawodzi
-        pip install pipwin
+        # PyAudio bywa problematyczne, spróbujemy standardowej instalacji
         pip install PyAudio
         
     - name: Build EXE
@@ -26,7 +25,7 @@ jobs:
         pyinstaller --onefile --windowed --name "Orbit_Studio_Chris" orbit_studio.py
         
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4 # Zmieniono na v4 - to był główny błąd!
       with:
         name: Orbit-Studio-Windows
         path: dist/Orbit_Studio_Chris.exe

@@ -1,0 +1,33 @@
+name: Build Orbit Studio EXE
+
+on:
+  push:
+    tags:
+      - 'v*' # Uruchomi się, gdy dodasz tag wersji, np. v2.0
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install PyQt6 numpy pyaudio pyinstaller
+        
+    - name: Build EXE
+      run: |
+        pyinstaller --noconsole --onefile --name "Orbit_Studio_v2_Gold" orbit.py
+        
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/Orbit_Studio_v2_Gold.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
